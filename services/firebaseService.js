@@ -482,7 +482,22 @@ export const updateEvent = async (eventId, eventData) => {
 
 export const deleteEvent = async (eventId) => {
   try {
+    // First, delete all expenses related to this event
+    const expensesQuery = query(
+      collection(db, 'expenses'),
+      where('eventId', '==', eventId)
+    );
+    const expensesSnapshot = await getDocs(expensesQuery);
+    
+    const deleteExpensePromises = expensesSnapshot.docs.map(doc => deleteDoc(doc.ref));
+    await Promise.all(deleteExpensePromises);
+    
+    console.log(`Deleted ${expensesSnapshot.docs.length} expenses for event ${eventId}`);
+    
+    // Then delete the event itself
     await deleteDoc(doc(db, 'events', eventId));
+    console.log(`Event ${eventId} deleted successfully`);
+    
     return eventId;
   } catch (error) {
     console.error('Error deleting event:', error);

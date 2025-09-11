@@ -41,11 +41,18 @@ export default function EventDetailsScreen() {
   }, [expenses]);
 
   const handleDelete = () => {
-    Alert.alert('Delete Event', 'Are you sure?', [
+    Alert.alert('Delete Event', 'Are you sure? This will delete the event and all its expenses.', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'Delete', style: 'destructive', onPress: async () => {
-        await deleteEvent(String(id));
-        router.back();
+        try {
+          await deleteEvent(String(id));
+          Alert.alert('Success', 'Event deleted successfully', [
+            { text: 'OK', onPress: () => router.back() }
+          ]);
+        } catch (error) {
+          console.error('Delete error:', error);
+          Alert.alert('Error', 'Failed to delete event. Please try again.');
+        }
       } }
     ]);
   };

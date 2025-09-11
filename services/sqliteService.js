@@ -438,13 +438,34 @@ export const updateEvent = (id, eventData) => {
 export const deleteEvent = (id) => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
+      // First delete all expenses related to this event
+      tx.executeSql(
+        'DELETE FROM expenses WHERE eventId = ?',
+        [id],
+        (_, result) => {
+          console.log(`Deleted ${result.rowsAffected} expenses for event ${id}`);
+        },
+        (_, error) => {
+          console.error('Error deleting expenses:', error);
+          reject(error);
+          return false;
+        }
+      );
+      
+      // Then delete the event itself
       tx.executeSql(
         'DELETE FROM events WHERE id = ?',
         [id],
         (_, result) => {
-          resolve(id);
+          if (result.rowsAffected > 0) {
+            console.log(`Event ${id} deleted successfully`);
+            resolve(id);
+          } else {
+            reject(new Error('Event not found'));
+          }
         },
         (_, error) => {
+          console.error('Error deleting event:', error);
           reject(error);
           return false;
         }
