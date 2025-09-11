@@ -45,7 +45,14 @@ export default function EventDetailsScreen() {
       { text: 'Cancel', style: 'cancel' },
       { text: 'Delete', style: 'destructive', onPress: async () => {
         try {
+          // Clear local state immediately
+          setEvent(null);
+          setExpenses([]);
+          setSummary({ Pending: 0, Spent: 0, Available: 0, Outstanding: 0 });
+          
+          // Delete from database
           await deleteEvent(String(id));
+          
           Alert.alert('Success', 'Event deleted successfully', [
             { text: 'OK', onPress: () => router.back() }
           ]);

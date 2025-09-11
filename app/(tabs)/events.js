@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Text, View } from '../../components/Themed';
 import { useTheme } from '../../context/theme';
-import { router } from 'expo-router';
-import { listenEvents, addEvent, initDatabase } from '../../services/asyncStorageService';
+import { router, useFocusEffect } from 'expo-router';
+import { listenEvents, addEvent, initDatabase, getEvents } from '../../services/asyncStorageService';
 import { t } from '../../utils/language';
 
 export default function EventsTab() {
@@ -28,6 +28,21 @@ export default function EventsTab() {
     
     initializeData();
   }, []);
+
+  // Refresh data when screen comes into focus
+  useFocusEffect(
+    React.useCallback(() => {
+      const refreshData = async () => {
+        try {
+          const eventsList = await getEvents();
+          setEvents(eventsList);
+        } catch (error) {
+          console.error('Error refreshing events:', error);
+        }
+      };
+      refreshData();
+    }, [])
+  );
 
   const handleAddQuick = async () => {
     try {

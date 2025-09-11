@@ -404,26 +404,76 @@ export const getBudgetSummary = async () => {
 
 // Listen functions (for compatibility with Firebase code)
 export const listenEvents = (callback) => {
+  // Initial call
   getEvents().then(callback).catch(console.error);
-  return () => {}; // No-op unsubscribe
+  
+  // Set up interval to check for changes every 2 seconds
+  const interval = setInterval(() => {
+    getEvents().then(callback).catch(console.error);
+  }, 2000);
+  
+  // Return unsubscribe function
+  return () => {
+    clearInterval(interval);
+  };
 };
 
 export const listenExpensesByEvent = (eventId, callback) => {
+  // Initial call
   getExpensesByEvent(eventId).then(callback).catch(console.error);
-  return () => {}; // No-op unsubscribe
+  
+  // Set up interval to check for changes every 2 seconds
+  const interval = setInterval(() => {
+    getExpensesByEvent(eventId).then(callback).catch(console.error);
+  }, 2000);
+  
+  // Return unsubscribe function
+  return () => {
+    clearInterval(interval);
+  };
 };
 
 export const listenExpenses = (callback) => {
+  // Initial call
   getExpenses().then(callback).catch(console.error);
-  return () => {}; // No-op unsubscribe
+  
+  // Set up interval to check for changes every 2 seconds
+  const interval = setInterval(() => {
+    getExpenses().then(callback).catch(console.error);
+  }, 2000);
+  
+  // Return unsubscribe function
+  return () => {
+    clearInterval(interval);
+  };
 };
 
 export const listenCategories = (callback) => {
+  // Initial call
   getCategories().then(callback).catch(console.error);
-  return () => {}; // No-op unsubscribe
+  
+  // Set up interval to check for changes every 2 seconds
+  const interval = setInterval(() => {
+    getCategories().then(callback).catch(console.error);
+  }, 2000);
+  
+  // Return unsubscribe function
+  return () => {
+    clearInterval(interval);
+  };
 };
 
 export const listenFunders = (callback) => {
+  // Initial call
   getFunders().then(callback).catch(console.error);
-  return () => {}; // No-op unsubscribe
+  
+  // Set up interval to check for changes every 2 seconds
+  const interval = setInterval(() => {
+    getFunders().then(callback).catch(console.error);
+  }, 2000);
+  
+  // Return unsubscribe function
+  return () => {
+    clearInterval(interval);
+  };
 };

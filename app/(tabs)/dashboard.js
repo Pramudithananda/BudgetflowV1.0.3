@@ -11,6 +11,8 @@ import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import { useTheme } from '../../context/theme';
 import { t } from '../../utils/language';
+import { useFocusEffect } from 'expo-router';
+import React from 'react';
 
 export default function DashboardScreen() {
   const { colors, isDarkMode } = useTheme();
