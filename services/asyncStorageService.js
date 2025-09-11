@@ -267,17 +267,32 @@ export const updateEvent = async (id, eventData) => {
 
 export const deleteEvent = async (id) => {
   try {
+    console.log(`Starting deletion of event ${id}`);
+    
     // First, delete all expenses related to this event
     const expenses = await getData(STORAGE_KEYS.EXPENSES);
+    console.log(`Found ${expenses.length} total expenses`);
+    
+    const relatedExpenses = expenses.filter(e => e.eventId === parseInt(id));
+    console.log(`Found ${relatedExpenses.length} expenses related to event ${id}`);
+    
     const filteredExpenses = expenses.filter(e => e.eventId !== parseInt(id));
     await setData(STORAGE_KEYS.EXPENSES, filteredExpenses);
+    console.log(`Deleted ${relatedExpenses.length} expenses, ${filteredExpenses.length} expenses remaining`);
     
     // Then delete the event itself
     const events = await getData(STORAGE_KEYS.EVENTS);
+    console.log(`Found ${events.length} total events`);
+    
+    const eventToDelete = events.find(e => e.id === parseInt(id));
+    if (!eventToDelete) {
+      throw new Error(`Event with id ${id} not found`);
+    }
+    
     const filteredEvents = events.filter(e => e.id !== parseInt(id));
     await setData(STORAGE_KEYS.EVENTS, filteredEvents);
+    console.log(`Event ${id} deleted successfully, ${filteredEvents.length} events remaining`);
     
-    console.log(`Event ${id} and its related expenses deleted successfully`);
     return id;
   } catch (error) {
     console.error('Error deleting event:', error);
