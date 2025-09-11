@@ -2,7 +2,7 @@
 
 ## Event Planning & Budget Management App
 
-A comprehensive React Native/Expo application for managing events, expenses, and budgets.
+A comprehensive React Native/Expo application for managing events, expenses, and budgets using **SQLite database** for local storage.
 
 ## 🚀 Quick Start
 
@@ -39,24 +39,60 @@ npx eas build --platform android --profile production
 
 For detailed build instructions, see [BUILD_APK_GUIDE.md](./BUILD_APK_GUIDE.md)
 
-## 🔧 Configuration
+## 🗄️ Database
 
-### Firebase Setup
-Update `/firebase/config.js` with your Firebase credentials before building for production.
+This app uses **SQLite** for local data storage. All data is stored locally on the device, providing:
+- ✅ Offline functionality
+- ✅ Fast performance
+- ✅ Data privacy (no cloud storage)
+- ✅ No internet required
+
+### Database Tables
+- `categories` - Expense categories
+- `funders` - Fund sources/sponsors
+- `events` - Event management
+- `expenses` - Expense tracking
+
+## 🔐 Authentication
+
+The app uses local authentication with AsyncStorage. User credentials are stored locally on the device.
 
 ## 📦 Project Structure
 - `/app` - Application screens and navigation
 - `/components` - Reusable UI components
-- `/services` - Data and API services
+- `/services` - Data services
+  - `sqliteService.js` - SQLite database operations
+  - `dataExportImportService.js` - Data export/import functionality
 - `/context` - React Context providers
 - `/assets` - Images and static assets
 
 ## 🛠️ Technologies
 - React Native / Expo SDK 52
-- Firebase Authentication & Firestore
-- SQLite for local storage
+- **SQLite** for local database
+- AsyncStorage for user preferences
 - React Navigation
 - i18next for internationalization
+
+## 📊 Features
+- ✅ Event management
+- ✅ Expense tracking
+- ✅ Budget monitoring
+- ✅ Category management
+- ✅ Funder/sponsor tracking
+- ✅ Data export/import (JSON format)
+- ✅ Multi-language support
+- ✅ Dark/Light theme
+- ✅ Offline functionality
+
+## 🔄 Data Export/Import
+
+The app supports exporting and importing data in JSON format for backup and migration purposes.
+
+### Export Data
+Navigate to Settings → Export Data to create a JSON backup of all your data.
+
+### Import Data
+Navigate to Settings → Import Data to restore from a JSON backup file.
 
 ## 📄 License
 Private project - All rights reserved

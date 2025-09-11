@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView, View as RNView, ActivityIndicator, Alert, TextI
 import { Text, View } from '../../../components/Themed';
 import { router, useLocalSearchParams } from 'expo-router';
 import Button from '../../../components/Button';
-import { getCategories, updateCategory } from '../../../services/asyncStorageService';
+import { getCategories, updateCategory } from '../../../services/sqliteService';
 import { useTheme } from '../../../context/theme';
 
 export default function EditCategoryScreen() {

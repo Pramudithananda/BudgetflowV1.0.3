@@ -5,7 +5,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
-import { getCategories, getFunders, addExpense, getEvents } from '../../services/asyncStorageService';
+import { getCategories, getFunders, addExpense, getEvents } from '../../services/sqliteService';
 import { useTheme } from '../../context/theme';
 import { t } from '../../utils/language';
 

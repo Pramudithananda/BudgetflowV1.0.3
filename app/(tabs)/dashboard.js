@@ -6,7 +6,7 @@ import BudgetSummary from '../../components/BudgetSummary';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import StatusCard from '../../components/StatusCard';
-import { getBudgetSummary, getExpenses, getCategories, getFunders, listenExpenses, listenCategories, listenFunders, getEvents, getExpensesByEvent, getEventStatusSummary } from '../../services/asyncStorageService';
+import { getBudgetSummary, getExpenses, getCategories, getFunders, listenExpenses, listenCategories, listenFunders, getEvents, getExpensesByEvent, getEventStatusSummary } from '../../services/sqliteService';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import { useTheme } from '../../context/theme';

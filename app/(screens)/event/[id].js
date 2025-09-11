@@ -4,7 +4,7 @@ import { CheckBox } from 'react-native-elements';
 import { useLocalSearchParams, router, Stack } from 'expo-router';
 import { Text, View } from '../../../components/Themed';
 import { useTheme } from '../../../context/theme';
-import { getEvent, deleteEvent, listenExpensesByEvent, getEventStatusSummary, updateExpense, toggleExpenseVisibility, getExpensesByEvent } from '../../../services/asyncStorageService';
+import { getEvent, deleteEvent, listenExpensesByEvent, getEventStatusSummary, updateExpense, toggleExpenseVisibility, getExpensesByEvent } from '../../../services/sqliteService';
 import StatusCard from '../../../components/StatusCard';
 
 export default function EventDetailsScreen() {

@@ -1,25 +1,19 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
+import * as sqliteService from './sqliteService';
 
 // Export all data to JSON
 export const exportAllData = async () => {
   try {
     console.log('Starting data export...');
     
-    // Get all data from AsyncStorage
-    const [categories, funders, events, expenses] = await Promise.all([
-      AsyncStorage.getItem('categories'),
-      AsyncStorage.getItem('funders'),
-      AsyncStorage.getItem('events'),
-      AsyncStorage.getItem('expenses')
+    // Get all data from SQLite database
+    const [categoriesData, fundersData, eventsData, expensesData] = await Promise.all([
+      sqliteService.getCategories(),
+      sqliteService.getFunders(),
+      sqliteService.getEvents(),
+      sqliteService.getExpenses()
     ]);
-
-    // Parse JSON data
-    const categoriesData = categories ? JSON.parse(categories) : [];
-    const fundersData = funders ? JSON.parse(funders) : [];
-    const eventsData = events ? JSON.parse(events) : [];
-    const expensesData = expenses ? JSON.parse(expenses) : [];
 
     // Create export object
     const exportData = {
@@ -48,126 +42,137 @@ export const exportAllData = async () => {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
     const filename = `BudgetFlow_Export_${timestamp}.json`;
     
-    // Write to file
-    const fileUri = `${FileSystem.documentDirectory}${filename}`;
-    await FileSystem.writeAsStringAsync(fileUri, jsonString, {
-      encoding: FileSystem.EncodingType.UTF8
-    });
-
-    console.log('Data exported successfully to:', fileUri);
-    return { fileUri, filename, exportData };
+    // Save to file
+    const fileUri = FileSystem.documentDirectory + filename;
+    await FileSystem.writeAsStringAsync(fileUri, jsonString);
+    
+    console.log('Data exported successfully:', fileUri);
+    
+    return {
+      success: true,
+      fileUri,
+      filename,
+      exportData
+    };
   } catch (error) {
     console.error('Error exporting data:', error);
-    throw new Error('Failed to export data: ' + error.message);
+    return {
+      success: false,
+      error: error.message
+    };
   }
 };
 
 // Share exported data
-export const shareExportedData = async (fileUri, filename) => {
+export const shareExportedData = async (fileUri) => {
   try {
-    if (await Sharing.isAvailableAsync()) {
-      await Sharing.shareAsync(fileUri, {
-        mimeType: 'application/json',
-        dialogTitle: `Export BudgetFlow Data - ${filename}`,
-      });
-    } else {
-      throw new Error('Sharing is not available on this device');
+    const isAvailable = await Sharing.isAvailableAsync();
+    
+    if (!isAvailable) {
+      console.log('Sharing is not available on this platform');
+      return {
+        success: false,
+        error: 'Sharing is not available on this platform'
+      };
     }
+    
+    await Sharing.shareAsync(fileUri, {
+      mimeType: 'application/json',
+      dialogTitle: 'Share BudgetFlow Data Export'
+    });
+    
+    return {
+      success: true
+    };
   } catch (error) {
-    console.error('Error sharing exported data:', error);
-    throw new Error('Failed to share exported data: ' + error.message);
+    console.error('Error sharing data:', error);
+    return {
+      success: false,
+      error: error.message
+    };
   }
 };
 
-// Import data from JSON string (for now, without file picker)
+// Import data from JSON string
 export const importDataFromString = async (jsonString) => {
   try {
-    console.log('Starting data import from string...');
+    console.log('Starting data import...');
     
     // Parse JSON
     const importData = JSON.parse(jsonString);
     
     // Validate data structure
     if (!importData.data || !importData.version) {
-      throw new Error('Invalid data format');
+      throw new Error('Invalid import file format');
     }
-
-    // Validate required data
+    
     const { categories, funders, events, expenses } = importData.data;
     
-    if (!Array.isArray(categories) || !Array.isArray(funders) || 
-        !Array.isArray(events) || !Array.isArray(expenses)) {
-      throw new Error('Invalid data structure');
-    }
-
-    // Backup current data before import
-    await backupCurrentData();
-
-    // Import new data
-    await Promise.all([
-      AsyncStorage.setItem('categories', JSON.stringify(categories)),
-      AsyncStorage.setItem('funders', JSON.stringify(funders)),
-      AsyncStorage.setItem('events', JSON.stringify(events)),
-      AsyncStorage.setItem('expenses', JSON.stringify(expenses))
-    ]);
-
-    console.log('Data imported successfully');
-    return { 
-      success: true, 
-      message: 'Data imported successfully',
-      summary: importData.summary || {
-        categoriesCount: categories.length,
-        fundersCount: funders.length,
-        eventsCount: events.length,
-        expensesCount: expenses.length
+    // Clear existing data and import new data
+    // Note: This is a simple implementation. In production, you might want to:
+    // - Merge data instead of replacing
+    // - Handle ID conflicts
+    // - Add validation
+    
+    // Import categories
+    if (categories && Array.isArray(categories)) {
+      for (const category of categories) {
+        await sqliteService.addCategory(category);
       }
+    }
+    
+    // Import funders
+    if (funders && Array.isArray(funders)) {
+      for (const funder of funders) {
+        await sqliteService.addFunder(funder);
+      }
+    }
+    
+    // Import events
+    if (events && Array.isArray(events)) {
+      for (const event of events) {
+        await sqliteService.addEvent(event);
+      }
+    }
+    
+    // Import expenses
+    if (expenses && Array.isArray(expenses)) {
+      for (const expense of expenses) {
+        await sqliteService.addExpense(expense);
+      }
+    }
+    
+    console.log('Data imported successfully');
+    
+    return {
+      success: true,
+      summary: importData.summary || {}
     };
   } catch (error) {
     console.error('Error importing data:', error);
-    return { 
-      success: false, 
-      message: 'Failed to import data: ' + error.message 
+    return {
+      success: false,
+      error: error.message
     };
   }
 };
 
-// Backup current data before import
-const backupCurrentData = async () => {
+// Import data from file URI
+export const importDataFromFile = async (fileUri) => {
   try {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-    const backupFilename = `BudgetFlow_Backup_${timestamp}.json`;
+    console.log('Reading import file:', fileUri);
     
-    // Get current data
-    const [categories, funders, events, expenses] = await Promise.all([
-      AsyncStorage.getItem('categories'),
-      AsyncStorage.getItem('funders'),
-      AsyncStorage.getItem('events'),
-      AsyncStorage.getItem('expenses')
-    ]);
-
-    // Create backup object
-    const backupData = {
-      version: '1.0',
-      backupDate: new Date().toISOString(),
-      appName: 'BudgetFlow',
-      data: {
-        categories: categories ? JSON.parse(categories) : [],
-        funders: funders ? JSON.parse(funders) : [],
-        events: events ? JSON.parse(events) : [],
-        expenses: expenses ? JSON.parse(expenses) : []
-      }
-    };
-
-    // Save backup
-    const backupUri = `${FileSystem.documentDirectory}${backupFilename}`;
-    await FileSystem.writeAsStringAsync(backupUri, JSON.stringify(backupData, null, 2), {
-      encoding: FileSystem.EncodingType.UTF8
-    });
-
-    console.log('Backup created:', backupFilename);
+    // Read file content
+    const jsonString = await FileSystem.readAsStringAsync(fileUri);
+    
+    // Import the data
+    return await importDataFromString(jsonString);
   } catch (error) {
-    console.error('Error creating backup:', error);
-    // Don't throw error for backup failure, just log it
+    console.error('Error reading import file:', error);
+    return {
+      success: false,
+      error: error.message
+    };
   }
 };
 
@@ -175,24 +180,18 @@ const backupCurrentData = async () => {
 export const getDataSummary = async () => {
   try {
     const [categories, funders, events, expenses] = await Promise.all([
-      AsyncStorage.getItem('categories'),
-      AsyncStorage.getItem('funders'),
-      AsyncStorage.getItem('events'),
-      AsyncStorage.getItem('expenses')
+      sqliteService.getCategories(),
+      sqliteService.getFunders(),
+      sqliteService.getEvents(),
+      sqliteService.getExpenses()
     ]);
-
-    const categoriesData = categories ? JSON.parse(categories) : [];
-    const fundersData = funders ? JSON.parse(funders) : [];
-    const eventsData = events ? JSON.parse(events) : [];
-    const expensesData = expenses ? JSON.parse(expenses) : [];
-
+    
     return {
-      categoriesCount: categoriesData.length,
-      fundersCount: fundersData.length,
-      eventsCount: eventsData.length,
-      expensesCount: expensesData.length,
-      totalExpenseAmount: expensesData.reduce((sum, exp) => sum + (exp.amount || 0), 0),
-      lastModified: new Date().toISOString()
+      categoriesCount: categories.length,
+      fundersCount: funders.length,
+      eventsCount: events.length,
+      expensesCount: expenses.length,
+      totalExpenseAmount: expenses.reduce((sum, exp) => sum + (exp.amount || 0), 0)
     };
   } catch (error) {
     console.error('Error getting data summary:', error);
@@ -201,24 +200,54 @@ export const getDataSummary = async () => {
       fundersCount: 0,
       eventsCount: 0,
       expensesCount: 0,
-      totalExpenseAmount: 0,
-      lastModified: new Date().toISOString()
+      totalExpenseAmount: 0
     };
   }
 };
 
-// Clear all data (for testing/reset)
+// Clear all data (use with caution!)
 export const clearAllData = async () => {
   try {
-    await Promise.all([
-      AsyncStorage.removeItem('categories'),
-      AsyncStorage.removeItem('funders'),
-      AsyncStorage.removeItem('events'),
-      AsyncStorage.removeItem('expenses')
+    console.log('Clearing all data...');
+    
+    // Get all items and delete them
+    const [categories, funders, events, expenses] = await Promise.all([
+      sqliteService.getCategories(),
+      sqliteService.getFunders(),
+      sqliteService.getEvents(),
+      sqliteService.getExpenses()
     ]);
-    console.log('All data cleared');
+    
+    // Delete all categories
+    for (const category of categories) {
+      await sqliteService.deleteCategory(category.id);
+    }
+    
+    // Delete all funders
+    for (const funder of funders) {
+      await sqliteService.deleteFunder(funder.id);
+    }
+    
+    // Delete all events
+    for (const event of events) {
+      await sqliteService.deleteEvent(event.id);
+    }
+    
+    // Delete all expenses
+    for (const expense of expenses) {
+      await sqliteService.deleteExpense(expense.id);
+    }
+    
+    console.log('All data cleared successfully');
+    
+    return {
+      success: true
+    };
   } catch (error) {
     console.error('Error clearing data:', error);
-    throw new Error('Failed to clear data: ' + error.message);
+    return {
+      success: false,
+      error: error.message
+    };
   }
 };

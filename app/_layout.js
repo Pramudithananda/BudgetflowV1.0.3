@@ -3,8 +3,18 @@ import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import { useThemeColor } from '../components/Themed';
 import { ThemeProvider } from '../context/theme';
 import { ConfirmDialogProvider } from '../components/CustomConfirmDialog';
+import { useEffect } from 'react';
+import { initDatabase } from '../services/sqliteService';
 
 export default function RootLayout() {
+  useEffect(() => {
+    // Initialize SQLite database when app starts
+    initDatabase().then(() => {
+      console.log('SQLite database initialized');
+    }).catch(error => {
+      console.error('Error initializing SQLite database:', error);
+    });
+  }, []);
   const tabBarActiveColor = '#64a12d';
   const tabBarInactiveColor = '#707070';
 

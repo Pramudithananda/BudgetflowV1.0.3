@@ -5,7 +5,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Card from '../../../components/Card';
 import Button from '../../../components/Button';
-import { getExpense, deleteExpense } from '../../../services/asyncStorageService';
+import { getExpense, deleteExpense } from '../../../services/sqliteService';
 import { useTheme } from '../../../context/theme';
 
 export default function ExpenseDetailScreen() {

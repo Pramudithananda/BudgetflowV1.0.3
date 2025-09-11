@@ -5,7 +5,7 @@ import { router } from 'expo-router';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
-import { getFunders, addFunder, updateFunder, deleteFunder } from '../../services/asyncStorageService';
+import { getFunders, addFunder, updateFunder, deleteFunder } from '../../services/sqliteService';
 
 export default function FundersScreen() {
   const [loading, setLoading] = useState(true);

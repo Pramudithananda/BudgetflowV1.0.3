@@ -6,7 +6,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import ExpenseItem from '../../components/ExpenseItem';
-import { getExpenses, listenExpenses, getEvents } from '../../services/asyncStorageService';
+import { getExpenses, listenExpenses, getEvents } from '../../services/sqliteService';
 import { useTheme } from '../../context/theme';
 
 export default function AllExpensesScreen() {

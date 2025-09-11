@@ -9,7 +9,7 @@ import Button from '../../components/Button';
 import CategoryItem from '../../components/CategoryItem';
 import ExpenseItem from '../../components/ExpenseItem';
 import StatusCard from '../../components/StatusCard';
-import { getCategories, getExpenses, getBudgetSummary, listenExpenses, listenCategories, getEvents } from '../../services/asyncStorageService';
+import { getCategories, getExpenses, getBudgetSummary, listenExpenses, listenCategories, getEvents } from '../../services/sqliteService';
 import { useTheme } from '../../context/theme';
 import { t } from '../../utils/language';
 

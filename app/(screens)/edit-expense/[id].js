@@ -6,7 +6,7 @@ import Card from '../../../components/Card';
 import Button from '../../../components/Button';
 import { Picker } from '@react-native-picker/picker';
 import { MaterialIcons } from '@expo/vector-icons';
-import { getExpense, updateExpense, getCategories, getFunders } from '../../../services/asyncStorageService';
+import { getExpense, updateExpense, getCategories, getFunders } from '../../../services/sqliteService';
 import { useTheme } from '../../../context/theme';
 
 export default function EditExpenseScreen() {

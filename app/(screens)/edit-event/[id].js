@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView, TextInput, TouchableOpacity, Alert } from 'reac
 import { useLocalSearchParams, router, Stack } from 'expo-router';
 import { Text, View } from '../../../components/Themed';
 import { useTheme } from '../../../context/theme';
-import { getEvent, updateEvent, listenExpensesByEvent, updateExpense, getEventStatusSummary } from '../../../services/asyncStorageService';
+import { getEvent, updateEvent, listenExpensesByEvent, updateExpense, getEventStatusSummary } from '../../../services/sqliteService';
 import StatusCard from '../../../components/StatusCard';
 
 export default function EditEventScreen() {

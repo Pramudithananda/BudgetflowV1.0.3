@@ -4,7 +4,7 @@ import { Text, View } from '../../components/Themed';
 import { router } from 'expo-router';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
-import { addCategory } from '../../services/asyncStorageService';
+import { addCategory } from '../../services/sqliteService';
 import { useTheme } from '../../context/theme';
 
 export default function NewCategoryScreen() {

@@ -3,7 +3,7 @@ import { StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react
 import { Text, View } from '../../components/Themed';
 import { useTheme } from '../../context/theme';
 import { router } from 'expo-router';
-import { listenEvents, addEvent, initDatabase } from '../../services/asyncStorageService';
+import { listenEvents, addEvent, initDatabase } from '../../services/sqliteService';
 import { t } from '../../utils/language';
 
 export default function EventsTab() {
