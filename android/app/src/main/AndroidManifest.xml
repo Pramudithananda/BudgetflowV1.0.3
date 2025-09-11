@@ -26,6 +26,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="budgetflow"/>
         <data android:scheme="com.budgetflow.app"/>
+        <data android:scheme="exp+budget-flow"/>
       </intent-filter>
     </activity>
   </application>
