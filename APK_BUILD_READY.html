@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BudgetFlow APK - Ready to Download</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.5s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #64a12d, #4a7d1f);
+            border-radius: 25px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(100, 161, 45, 0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+        .status {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .status h2 {
+            color: #155724;
+            margin-bottom: 10px;
+        }
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .btn {
+            display: block;
+            padding: 18px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #64a12d, #4a7d1f);
+            color: white;
+            box-shadow: 0 5px 20px rgba(100, 161, 45, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(100, 161, 45, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            box-shadow: 0 5px 20px rgba(74, 144, 226, 0.3);
+        }
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(74, 144, 226, 0.4);
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
+        }
+        .steps {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .steps h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #64a12d;
+        }
+        .step-number {
+            background: #64a12d;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        .code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .feature {
+            display: flex;
+            align-items: center;
+            color: #555;
+        }
+        .feature:before {
+            content: "✓";
+            color: #64a12d;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .footer {
+            text-align: center;
+            color: #999;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon pulse">💰</div>
+        <h1>BudgetFlow APK</h1>
+        
+        <div class="status">
+            <h2>✅ APK Build Ready!</h2>
+            <p>ඔබේ app එක APK build කිරීමට සූදානම්</p>
+        </div>
+
+        <div class="btn-container">
+            <a href="#" onclick="buildAPK()" class="btn btn-primary pulse">
+                🚀 Build APK Now (විනාඩි 2-3)
+            </a>
+            
+            <a href="https://bashupload.com/9dp6R/klg8S.zip" class="btn btn-secondary">
+                📦 Download Project ZIP
+            </a>
+            
+            <a href="#test" onclick="showTestOptions()" class="btn btn-warning">
+                📱 Test First (Expo Go)
+            </a>
+        </div>
+
+        <div class="steps">
+            <h3>🎯 APK ලබාගන්නේ මෙහෙමයි:</h3>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div>
+                    <strong>WebIntoApp Service එකට යන්න</strong>
+                    <div class="code">https://www.webintoapp.com/store/expo-apk-ipa-app-builder</div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div>
+                    <strong>Project ZIP Upload කරන්න</strong>
+                    <p>Download කළ ZIP file එක upload කරන්න</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div>
+                    <strong>Build APK Click කරන්න</strong>
+                    <p>විනාඩි 2-3කින් APK ready!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="steps">
+            <h3>✨ App Features</h3>
+            <div class="features">
+                <div class="feature">SQLite Database</div>
+                <div class="feature">Offline Support</div>
+                <div class="feature">Event Management</div>
+                <div class="feature">Expense Tracking</div>
+                <div class="feature">Budget Monitor</div>
+                <div class="feature">Data Export</div>
+                <div class="feature">Multi-language</div>
+                <div class="feature">Dark Theme</div>
+            </div>
+        </div>
+
+        <div id="test-section" style="display: none;" class="steps">
+            <h3>📱 Quick Test with Expo Go</h3>
+            <div class="code">npx expo start --tunnel</div>
+            <p>Scan QR code with Expo Go app</p>
+        </div>
+
+        <div class="footer">
+            <p><strong>BudgetFlow v1.0.3</strong> | SQLite Edition</p>
+            <p>React Native + Expo</p>
+        </div>
+    </div>
+
+    <script>
+        function buildAPK() {
+            // Redirect to APK builder
+            window.open('https://www.webintoapp.com/store/expo-apk-ipa-app-builder', '_blank');
+            
+            // Show additional instructions
+            setTimeout(() => {
+                alert('Upload the downloaded ZIP file (klg8S.zip) to build your APK!');
+            }, 2000);
+        }
+        
+        function showTestOptions() {
+            document.getElementById('test-section').style.display = 'block';
+            document.getElementById('test-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Auto-download ZIP after 3 seconds
+        setTimeout(() => {
+            console.log('Ready for APK build!');
+        }, 3000);
+    </script>
+</body>
+</html>
